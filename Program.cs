@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using MovieAppApi.Src.Infrastructure.Persistence;
 using MovieAppApi.Src.Domain.Interfaces;
 using MovieAppApi.Src.Infrastructure.Repositories;
-
+using MovieAppApi.Src.Infrastructure.External;
 
 
 
@@ -32,9 +32,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // builder Services
 builder.Services.AddHttpClient<IMovieService, MovieService>();
 
+// Movie services
+builder.Services.AddScoped<IMovieService, MovieService>();
+builder.Services.AddHttpClient<IFetchMoviesService, TmdbService>();
+
 // DI Watchlist
 builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
 builder.Services.AddScoped<IWatchlistService, WatchlistService>();
+
 
 // Swagger
 builder.Services.AddSwaggerGen(c =>
