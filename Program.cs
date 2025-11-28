@@ -2,6 +2,12 @@ using DotNetEnv;
 using Microsoft.OpenApi.Models;
 using MovieAppApi.Src.Application.Interfaces;
 using MovieAppApi.Src.Application.Services;
+using Microsoft.EntityFrameworkCore;
+using MovieAppApi.Src.Infrastructure.Persistence;
+using MovieAppApi.Src.Domain.Interfaces;
+using MovieAppApi.Src.Infrastructure.Repositories;
+
+
 
 
 // Load .env
@@ -15,10 +21,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Controllers
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// EF Core + SQLite
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 
 // builder Services
 builder.Services.AddHttpClient<IMovieService, MovieService>();
+
+// DI Watchlist
+builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
+builder.Services.AddScoped<IWatchlistService, WatchlistService>();
 
 // Swagger
 builder.Services.AddSwaggerGen(c =>
