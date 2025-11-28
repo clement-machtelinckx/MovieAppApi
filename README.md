@@ -1,7 +1,6 @@
 # 🎬 MovieApp API
 
 API ASP.NET Core (.NET 9) pour rechercher des films via TMDB, gérer une watchlist et des playlists de films, le tout stocké en SQLite.
-
 ---
 
 ## ✅ Prérequis
@@ -51,12 +50,12 @@ La base SQLite (movieapp.db) sera créée automatiquement si elle n’existe pas
 ## 🛠️ Packages utilisés
 
 Les principaux packages NuGet (déjà référencés dans MovieAppApi.csproj) :
-    - DotNetEnv – chargement du .env
-    - Microsoft.EntityFrameworkCore
-    - Microsoft.EntityFrameworkCore.Sqlite
-    - Microsoft.EntityFrameworkCore.Design
-    - Swashbuckle.AspNetCore – Swagger/OpenAPI
-    - Microsoft.AspNetCore.OpenApi
+- DotNetEnv – chargement du .env
+- Microsoft.EntityFrameworkCore
+- Microsoft.EntityFrameworkCore.Sqlite
+- Microsoft.EntityFrameworkCore.Design
+- Swashbuckle.AspNetCore – Swagger/OpenAPI
+- Microsoft.AspNetCore.OpenApi
 
 ## 🚀 Lancer le projet
 
@@ -83,7 +82,7 @@ Par défaut (profil http), l’API écoute sur :
 
 Une fois l’API lancée en environnement Development, la doc Swagger est disponible ici :
 
-    http://localhost:5073/swagger
+    http://localhost:5073/swagger/index.html
 
 ## 🌐 Routes principales de l’API
 
@@ -108,10 +107,8 @@ Exemple de réponse :
     GET /api/movies?search_term=...&language=...
 
 Query params :
-
-search_term (string, requis) : texte recherché
-
-language (string, requis, "en" ou "fr")
+- search_term (string, requis) : texte recherché
+- language (string, requis, "en" ou "fr")
 
 Exemple :
 
@@ -140,17 +137,15 @@ Réponse (exemple) :
     GET /api/movies/{movieId}?language=...
 
 Params :
-
     - movieId (int, requis) : ID du film TMDB
     - language (query, "en" ou "fr")
 
 Exemple :
 
-GET /api/movies/550?language=en
+    GET /api/movies/550?language=en
 
 
 200 OK → MovieDto
-
 404 Not Found → "Movie id {movieId} not found" (si TMDB renvoie 404)
 
 ### 📺 Watchlist (liste perso de films)
@@ -192,7 +187,6 @@ Réponse : l’item ajouté.
     DELETE /api/watchlist/{movieId}
 
 204 No Content si supprimé
-
 404 Not Found si non trouvé
 
 #### 4. Marquer comme vu / non vu
@@ -201,7 +195,7 @@ Réponse : l’item ajouté.
 
 Exemple :
 
-PATCH /api/watchlist/550/watched?isWatched=true
+    PATCH /api/watchlist/550/watched?isWatched=true
 
 ### 🎶 Playlists de films
 
@@ -249,7 +243,6 @@ Réponse :
     GET /api/playlists/{playlistId}
 
 200 OK → PlaylistDto
-
 404 Not Found → "Playlist id {id} not found"
 
 #### 4. Mettre à jour une playlist
@@ -267,9 +260,7 @@ Body :
 ```
 
 400 Bad Request si playlistId de la route ≠ id dans le body
-
 200 OK + playlist mise à jour
-
 404 Not Found si playlist inexistante
 
 #### 5. Supprimer une playlist
@@ -277,5 +268,4 @@ Body :
     DELETE /api/playlists/{playlistId}
 
 204 No Content si supprimée
-
 404 Not Found si non trouvée
