@@ -1,12 +1,13 @@
 using DotNetEnv;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
 using MovieAppApi.Src.Application.Interfaces;
 using MovieAppApi.Src.Application.Services;
-using Microsoft.EntityFrameworkCore;
-using MovieAppApi.Src.Infrastructure.Persistence;
 using MovieAppApi.Src.Domain.Interfaces;
-using MovieAppApi.Src.Infrastructure.Repositories;
 using MovieAppApi.Src.Infrastructure.External;
+using MovieAppApi.Src.Infrastructure.Persistence;
+using MovieAppApi.Src.Infrastructure.Repositories;
+
 
 
 
@@ -18,29 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Console.WriteLine("TMDB KEY = " + builder.Configuration["TMDB_API_KEY"]);
 
 
-// Controllers
+// Controllers & Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// EF Core + SQLite
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-
-
-
-// Movie services
-builder.Services.AddScoped<IMovieService, MovieService>();
-builder.Services.AddHttpClient<IFetchMoviesService, TmdbService>();
-
-
-// DI Watchlist
-builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
-builder.Services.AddScoped<IWatchlistService, WatchlistService>();
-
-
-// Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
@@ -49,6 +30,23 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 });
+
+// EF Core + SQLite
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// TMDB
+builder.Services.AddHttpClient<IFetchMoviesService, TmdbService>();
+builder.Services.AddScoped<IMovieService, MovieService>();
+
+// Watchlist
+builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
+builder.Services.AddScoped<IWatchlistService, WatchlistService>();
+
+// Playlists
+builder.Services.AddScoped<IPlaylistRepository, PlaylistRepository>();
+builder.Services.AddScoped<IPlaylistService, PlaylistService>();
+
 
 var app = builder.Build();
 
