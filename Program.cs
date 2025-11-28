@@ -29,12 +29,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 
-// builder Services
-builder.Services.AddHttpClient<IMovieService, MovieService>();
 
 // Movie services
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddHttpClient<IFetchMoviesService, TmdbService>();
+
 
 // DI Watchlist
 builder.Services.AddScoped<IWatchlistRepository, WatchlistRepository>();
